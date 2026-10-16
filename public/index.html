@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CS 351 - Lab 8</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f7fb; padding: 32px; color: #1e293b; }
+    main { max-width: 620px; margin: auto; background: white; padding: 28px; border-radius: 14px; box-shadow: 0 3px 16px #0001; }
+    button { background: #2254cc; color: white; border: 0; border-radius: 6px; padding: 10px 15px; cursor: pointer; }
+    input { padding: 9px; margin-right: 8px; max-width: 200px; }
+    .result { min-height: 25px; margin-top: 15px; color: #175a36; overflow-wrap: anywhere; }
+    section { margin-top: 24px; border-top: 1px solid #ddd; padding-top: 16px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>CS 351 - Lab 8</h1>
+  <p><strong>Matt Coloma</strong> | Node.js + Express | Google Cloud Run</p>
+  <p>This application uses client-side JavaScript <code>fetch()</code> to communicate with an Express REST API.</p>
+  <section>
+    <h2>GET request demo</h2>
+    <button id="testBackend">Test Backend (GET)</button>
+    <p id="getResult" class="result" aria-live="polite"></p>
+  </section>
+  <section>
+    <h2>POST request demo</h2>
+    <form id="greetingForm">
+      <label for="name">Name:</label>
+      <input id="name" name="name" placeholder="Enter your name" required>
+      <button type="submit">Send to Backend (POST)</button>
+    </form>
+    <p id="postResult" class="result" aria-live="polite"></p>
+  </section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
