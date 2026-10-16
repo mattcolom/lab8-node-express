@@ -1,25 +1,29 @@
-// CS 351 Lab 8 - Node.js + Express backend
-// This server hosts the frontend and exposes a REST API.
+// CS 351 Lab 8.1 and 8.2: Express app, traditional form and REST API.
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// REST endpoint used by the frontend with fetch() (Lab 8.2)
-app.get('/api/message', (req, res) => {
-  res.json({ message: 'Hello from Matt\'s Node.js + Express backend!', source: 'Express REST API' });
+// Part A: traditional HTML form posts to Express and receives a new HTML page.
+app.post('/readCustomerInfoAndRespond', (req, res) => {
+  const name = String(req.body.name || '').trim();
+  const email = String(req.body.email || '').trim();
+  const escapeHtml = (value) => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  res.type('html').send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Traditional Response</title></head><body><h1>Welcome ${escapeHtml(name)}</h1><p>We will contact you at ${escapeHtml(email)}</p><a href="/">Return to the lab</a></body></html>`);
 });
 
-// Example POST REST endpoint to demonstrate sending client data.
-app.post('/api/greet', (req, res) => {
-  const name = typeof req.body?.name === 'string' ? req.body.name.trim().slice(0, 80) : '';
-  if (!name) return res.status(400).json({ error: 'Please enter a name.' });
-  res.json({ message: `Hello, ${name}! Your request reached the Express server.` });
+// Part B: REST endpoint responds to the same form data with JSON.
+app.post('/api/customer', (req, res) => {
+  const name = String(req.body.name || '').trim();
+  const email = String(req.body.email || '').trim();
+  res.json({ message: `Welcome ${name}`, email });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`CS 351 Lab 8 server running at http://localhost:${PORT}`);
-});
+// Extra demo routes from Lab 8.1 remain available.
+app.get('/api/message', (req, res) => res.json({message: "Hello from Matt's Node.js + Express backend!"}));
+app.post('/api/greet', (req, res) => res.json({message: `Hello, ${String(req.body.name || '').trim()}! Your request reached the Express server.`}));
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running at http://localhost:${PORT}`));
